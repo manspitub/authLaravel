@@ -17,8 +17,11 @@ return new class extends Migration
             $table->string('name');
             $table->string('surname');
             $table->integer('age');
+            $table->string('email')->unique(); // Agregamos el campo email
+            $table->string('password'); // Agregamos el campo password
             $table->timestamps();
         });
+        
     }
 
     /**

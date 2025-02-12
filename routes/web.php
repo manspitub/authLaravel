@@ -19,6 +19,9 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/clients', [ClientController::class, 'index'])->name('client.index');
+Route::get('/client/create', [ClientController::class, 'create'])->name('client.create');
+Route::post("client/create", [ClientController::class, 'store'])->name('client.store'); // Ruta para crear un post
+
 
 
 require __DIR__ . '/auth.php';

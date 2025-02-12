@@ -21,7 +21,7 @@ class ClientController extends Controller
      */
     public function create()
     {
-        //
+        return view('client.create');
     }
 
     /**
@@ -29,7 +29,25 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validar los datos de entrada
+        $validatedData = $request->validate([
+            'username' => 'required|string|max:255|unique:clients,username',
+            'name' => 'required|string|max:255',
+            'surname' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:clients,email',
+            'password' => 'required|string|min:8',
+        ]);
+
+        // Crear el cliente
+        Client::create([
+            'username' => $validatedData['username'],
+            'name' => $validatedData['name'],
+            'surname' => $validatedData['surname'],
+            'email' => $validatedData['email'],
+            'password' => bcrypt($validatedData['password']), // Encriptar contraseña
+        ]);
+
+        return to_route('client.index')->with('status', 'Client Created');
     }
 
     /**
