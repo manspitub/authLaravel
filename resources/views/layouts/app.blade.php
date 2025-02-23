@@ -19,11 +19,6 @@
 <body class="font-sans antialiased">
     <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
         @include('layouts.navigation')
-        @session('status')
-            <div class="alert alert-success">
-                {{ session('status') }}
-            </div>
-        @endsession (session('status'))
         <!-- Page Heading -->
         @isset($header)
             <header class="bg-white dark:bg-gray-800 shadow">
@@ -33,8 +28,17 @@
             </header>
         @endisset
 
-        <!-- Page Content -->
-        <main>
+        <!-- Alert Message -->
+        @if (session('status'))
+            <div class="max-w-2xl mx-auto mt-4">
+                <div class="p-4 text-green-800 bg-green-100 border border-green-400 rounded-lg shadow-md 
+                                    transition-opacity duration-500 ease-in-out opacity-100 hover:opacity-80">
+                    <p class="text-lg text-center font-semibold text-gray-900 dark:text-white">{{ session('status') }}</p>
+                </div>
+            </div>
+        @endif
+
+        <main class="">
             {{ $slot }}
         </main>
     </div>

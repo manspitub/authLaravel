@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SaveClientRequest;
 use App\Models\Client;
 use Illuminate\Http\Request;
 
@@ -19,66 +20,74 @@ class ClientController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Client $client)
     {
-        return view('client.create');
+        return view('client.create', compact('client'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(SaveClientRequest $request)
     {
-        // Validar los datos de entrada
-        $validatedData = $request->validate([
-            'username' => 'required|string|max:255|unique:clients,username',
-            'name' => 'required|string|max:255',
-            'surname' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:clients,email',
-            'password' => 'required|string|min:8',
-        ]);
+        // Validamos y obtenemos los datos
+        $data = $request->validated();
 
-        // Crear el cliente
-        Client::create([
-            'username' => $validatedData['username'],
-            'name' => $validatedData['name'],
-            'surname' => $validatedData['surname'],
-            'email' => $validatedData['email'],
-            'password' => bcrypt($validatedData['password']), // Encriptar contraseña
-        ]);
+        // Hasheamos el password antes de crear el cliente
+        $data['password'] = bcrypt($data['password']);
 
+        // Creamos el nuevo cliente
+        Client::create($data);
+
+        // Redirigimos con un mensaje de éxito
         return to_route('client.index')->with('status', 'Client Created');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Client $client)
     {
-        //
+        return view('client.show', compact('client'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Client $client)
     {
-        //
+        return view('client.edit', compact('client'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(SaveClientRequest $request, Client $client)
     {
-        //
-    }
+        // Validamos y obtenemos los datos
+        $data = $request->validated();
 
+        // Si el password fue proporcionado, lo hasheamos
+        if ($request->has('password') && !empty($request->password)) {
+            $data['password'] = bcrypt($data['password']);
+        } else {
+            // Si no se proporciona un password, no lo cambiamos
+            unset($data['password']);
+        }
+
+        // Actualizamos el cliente con los nuevos datos
+        $client->update($data);
+
+        // Redirigimos con un mensaje de éxito
+        return to_route('client.index')->with('status', 'Client Updated');
+    }
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Client $client)
     {
-        //
+        $client->delete();
+
+        return to_route('client.index')->with('status','Client Deleted');
     }
 }

@@ -20,7 +20,10 @@ class Client extends Authenticatable
         'surname',
         'email',
         'password',
+        'age'
     ];
+
+    public $timestamps = false; // Deshabilita las marcas de tiempo
 
     // Ocultar ciertos atributos en respuestas JSON
     protected $hidden = [
