@@ -33,22 +33,27 @@
                     class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
                     {{__('Back')}}
                 </a>
+                @auth
+                    <!-- Edit Button -->
+                    <a href="{{ route('client.edit', $client->id) }}"
+                        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                        {{__('Edit')}}
+                    </a>
+                @endauth
 
-                <!-- Edit Button -->
-                <a href="{{ route('client.edit', $client->id) }}"
-                    class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-                    {{__('Edit')}}
-                </a>
 
-                <!-- Delete Button -->
-                <form action="{{ route('client.destroy', $client->id) }}" method="POST"
-                    onsubmit="return confirm('Are you sure?');">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
-                        {{__('Delete')}}
-                    </button>
-                </form>
+                @auth
+                    <!-- Delete Button -->
+                    <form action="{{ route('client.destroy', $client->id) }}" method="POST"
+                        onsubmit="return confirm('Are you sure?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
+                            {{__('Delete')}}
+                        </button>
+                    </form>
+                @endauth
+
             </div>
 
 

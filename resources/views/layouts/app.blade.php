@@ -16,8 +16,9 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="font-sans antialiased">
-    <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
+<body class="font-sans antialiased"
+    style="background-image: url('/images/background.jpg'); background-size: cover; background-position: center;">
+    <div class="min-h-screen">
         @include('layouts.navigation')
         <!-- Page Heading -->
         @isset($header)
@@ -32,8 +33,9 @@
         @if (session('status'))
             <div class="max-w-2xl mx-auto mt-4">
                 <div class="p-4 text-green-800 bg-green-100 border border-green-400 rounded-lg shadow-md 
-                                    transition-opacity duration-500 ease-in-out opacity-100 hover:opacity-80">
-                    <p class="text-lg text-center font-semibold text-gray-900 dark:text-white">{{ session('status') }}</p>
+                                        transition-opacity duration-500 ease-in-out opacity-100 hover:opacity-80">
+                    <p class="text-lg text-center font-semibold text-gray-900 dark:text-white">{{ __(session('status')) }}
+                    </p>
                 </div>
             </div>
         @endif
@@ -43,5 +45,6 @@
         </main>
     </div>
 </body>
+
 
 </html>
